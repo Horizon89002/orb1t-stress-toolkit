@@ -9,7 +9,9 @@ orb1t is designed for users who need in-depth insight into network behavior duri
 Whether you’re stress-testing a local network or simulating large-scale traffic, orb1t provides the tools to measure performance, identify bottlenecks, and improve overall resilience.
 
 
-# futures
+![preview](https://github.com/Horizon89002/orb1t-stress-toolkit/blob/main/social-preview.png)
+
+# Futures
 Multi-threading: orb1t can send high-speed packets using multiple threads.
 
 Customizable packets: Choose packet size, protocol (UDP/TCP), and randomize packet sending.
