@@ -207,7 +207,7 @@ PURPOSES ONLY.
             self.print_space()
             print(Fore.YELLOW + "|------------------------------------------------------- |")
             self.print_space()
-            print(Fore.YELLOW + "|-- l3                   layer 3 (ICMP)        --     5  |")
+            print(Fore.YELLOW + "|-- l3                   Layer 3 (ICMP)        --     5  |")
             print(Fore.YELLOW + "|-- l4                   Layer 4 (TCP / UDP)   --     6  |")
             print(Fore.YELLOW + "|-- l7                   Layer 7 (HTTP)        --     7  |")
             print(Fore.YELLOW + "|-- port                 perform a port scan   --    10  |")
