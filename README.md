@@ -44,27 +44,12 @@ pip install -r requirements.txt
 5. randomize packets
 
 # WARNING
-# DISCLAIMER
+The creator of orb1t assumes no responsibility for any damage caused by its use. The user alone is responsible for any misuse of orb1t, whether for illegal activities or accidental damage resulting from its operation.
 
-# The creator of **orb1t** assumes no responsibility for any damage caused by its use. 
-# The user alone is responsible for any misuse of orb1t, whether for illegal activities 
-# or accidental damage resulting from its operation.
-#
-# **orb1t** was not developed for illegal purposes, and the creator does not endorse 
-# any unauthorized or unlawful use of the tool. By using this software, 
-# you agree to take full responsibility for any damage caused by orb1t, in any form, 
-# and acknowledge the risks associated with its use.
-#
-# sers are advised to have a comprehensive understanding of network testing 
-# and the attack methods implemented in orb1t. Improper use may result in temporary 
-# or long-term damage to network devices, services, or systems. 
-# orb1t does not advocate or encourage illegal activities in any way.
+orb1t was not developed for illegal purposes, and the creator does not endorse any unauthorized or unlawful use of the tool. By using this software, you agree to take full responsibility for any damage caused by orb1t, in any form, and acknowledge the risks associated with its use.
 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
-# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR 
-# PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS 
-# BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-# TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR 
-# THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Users are advised to have a comprehensive understanding of network testing and the attack methods implemented in orb1t. Improper use may result in temporary or long-term damage to network devices, services, or systems. orb1t does not advocate or encourage illegal activities in any way.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # MIT License 2024
