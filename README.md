@@ -1,6 +1,6 @@
 # ORB1T
 
-orb1t is an advanced network testing tool built to simulate high-traffic scenarios and assess the performance and robustness of network infrastructure. Developed in Python (3.12), orb1t offers comprehensive features for generating and managing TCP/UDP traffic, making it a versatile solution for stress testing and penetration testing.
+orb1t is an advanced network testing tool built to simulate high-traffic scenarios and assess the performance and robustness of network infrastructure. Developed in Python, orb1t offers comprehensive features for generating and managing TCP/UDP traffic, making it a versatile solution for stress testing and penetration testing.
 
 With orb1t, you can simulate various types of network loads, assess server or service reliability, and analyze how networks respond under pressure. The tool leverages multi-threading for maximum throughput, allowing users to fine-tune parameters such as packet size and transmission rates.
 
