@@ -32,8 +32,8 @@ port scanning: scan an ip adress for open and closed ports
 # Installation
 you can either run the install.bat file or do the following:
 ```bash
-git clone https://github.com/Horizon89002/orb1t.git
-cd orb1t
+git clone https://github.com/Horizon89002/orb1t-stress-toolkit.git
+cd the/path/to/the/file
 pip install -r requirements.txt
 ```
 
