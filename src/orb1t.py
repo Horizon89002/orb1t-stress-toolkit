@@ -206,9 +206,9 @@ PURPOSES ONLY.
             self.print_header()  
             print(Fore.YELLOW + " -------------------COMMAND-MENU------------------------")
             self.print_space()
-            print(Fore.YELLOW + "|-- help                 view the command menu --     2  |")
-            print(Fore.YELLOW + "|-- clr                  Clear the screen      --     3  |")
-            print(Fore.YELLOW + "|-- shell                run a shell command   --     4  |")
+            print(Fore.YELLOW + "|-- help,sos             view the help menu    --     1  |")
+            print(Fore.YELLOW + "|-- clr                  Clear the screen      --     2  |")
+            print(Fore.YELLOW + "|-- shell                run a shell command   --     3  |")
             print(Fore.YELLOW + "|-- exit,q               exits the script      --     4  |")
             self.print_space()
             print(Fore.YELLOW + "|------------------------------------------------------- |")
@@ -216,9 +216,9 @@ PURPOSES ONLY.
             print(Fore.YELLOW + "|-- l3                   Layer 3 (ICMP)        --     5  |")
             print(Fore.YELLOW + "|-- l4                   Layer 4 (TCP / UDP)   --     6  |")
             print(Fore.YELLOW + "|-- l7                   Layer 7 (HTTP)        --     7  |")
-            print(Fore.YELLOW + "|-- port                 perform a port scan   --    10  |")
-            print(Fore.YELLOW + "|-- arp                  arp spoofer           --    11  |")
-            print(Fore.YELLOW + "|-- jam                  wifi jammer/deauth    --    12  |")
+            print(Fore.YELLOW + "|-- port                 perform a port scan   --     8  |")
+            print(Fore.YELLOW + "|-- arp                  arp spoofer           --     9  |")
+            print(Fore.YELLOW + "|-- jam                  wifi jammer/deauth    --    10  |")
             self.print_space()
             print(Fore.YELLOW + " -------------------------------------------------------")
     
@@ -237,9 +237,32 @@ PURPOSES ONLY.
             elif choice == 'shell':
                 self.run_powershell_command()
             elif choice == 'port':
-                self.port_scan()   
+                self.port_scan()
+            elif choice == 'help':
+                self.help_menu()
+            elif choice == 'sos':
+                self.help_menu()    
             else:
                 print(Fore.RED + "Invalid command. Please try again.")
+
+    
+    def help_menu(self):
+        
+        print(Fore.YELLOW + r"""  
+│ • help, sos:View this menu.
+│ • clr: Clear the screen.
+│ • shell: Run a PowerShell command.
+│ • exit, q: Exits the script.
+│ • l3: Send ICMP packets to the specified IP address.
+│ • l4: Send UDP/TCP packets to the specified IP address.
+│ • l7: Send HTTPS/HTTP requests to a specified domain or IP.
+│ • port: Scan an IP address for open and closed ports.
+│ • arp: Spoof/poison ARP responses to disrupt communication between devices on the network.
+│ • jam: Wi-Fi jammer sends deauthentication packets, forcing the device to reconnect.
+""")
+        input(Fore.YELLOW + "Press Enter to return to the menu...")
+        
+        
 
 
     def load_module(self, command):
@@ -482,3 +505,5 @@ if __name__ == "__main__":
     tool.main_menu()
     orb1t_instance = orb1t()  
     orb1t_instance.port_scan()
+    orb1t.help_menu()
+    
