@@ -6,8 +6,6 @@ With orb1t, you can simulate various types of network loads, assess server or se
 
 orb1t is designed for users who need in-depth insight into network behavior during peak traffic, making it a valuable resource for network administrators, developers, and security professionals. It’s adaptable for testing a wide range of network environments and can be optimized for testing against custom targets.
 
-Whether you’re stress-testing a local network or simulating large-scale traffic, orb1t provides the tools to measure performance, identify bottlenecks, and improve overall resilience.
-
 
 ![preview](https://github.com/Horizon89002/orb1t-stress-toolkit/blob/main/preview.png)
 
