@@ -183,21 +183,19 @@ class orb1t:
 
 
     def print_header(self):
-        print(Fore.LIGHTBLUE_EX + r"""                                                                                                                                                                                         
-           
-BY USING THIS SCRIPT, YOU AGREE TO TAKE FULL RESPONSIBILITY 
-FOR ANY DAMAGE CAUSED BY ORB1T.
-THIS SCRIPT, WAS MADE FOR EDUCATIONAL AND TESTING
-PURPOSES ONLY.            
- ________  ________  ________    _____  _________   
-|\   __  \|\   __  \|\   __  \  / __  \|\___   ___\ 
-\ \  \|\  \ \  \|\  \ \  \|\ /_|\/_|\  \|___ \  \_| 
- \ \  \\\  \ \   _  _\ \   __  \|/ \ \  \   \ \  \  
-  \ \  \\\  \ \  \\  \\ \  \|\  \   \ \  \   \ \  \ 
-   \ \_______\ \__\\ _\\ \_______\   \ \__\   \ \__\
-    \|_______|\|__|\|__|\|_______|    \|__|    \|__| v1.2
-""")
-    
+        print(Fore.WHITE + "BY USING THIS SCRIPT, YOU AGREE TO TAKE FULL RESPONSIBILITY ")
+        print("FOR ANY DAMAGE/LEGAL ISSUES CAUSED BY ORB1T.")
+        print("THIS SCRIPT WAS MADE FOR EDUCATIONAL AND TESTING PURPOSES ONLY.\n")
+        print(Fore.BLUE + " ________  ________  ________    _____  _________   ")
+        print(Fore.LIGHTBLUE_EX +"|\\   __  \\|\\   __  \\|\\   __  \\  / __  \\|\\___   ___\\ ")
+        print(Fore.LIGHTBLUE_EX + "\\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\ /_|\\/|\\  \\|___ \\  \\_| ")
+        print(Fore.LIGHTBLUE_EX + " \\ \\  \\\\\\  \\ \\   _  _\\ \\   __  \\|/ \\ \\  \\   \\ \\  \\  ")
+        print(Fore.LIGHTYELLOW_EX + "  \\ \\  \\\\\\  \\ \\  \\\\  \\\\ \\  \\|\\  \\   \\ \\  \\   \\ \\  \\ ")
+        print(Fore.LIGHTYELLOW_EX + "   \\ \\_______\\ \\__\\\\ _\\\\ \\_______\\   \\ \\__\\   \\ \\__\\")
+        print(Fore.LIGHTYELLOW_EX + "    \\|_______|\\|__|\\|__|\\|_______|    \\|__|    \\|__| v1.2")
+     
+        print(Style.RESET_ALL)
+
     def print_space(self):
         print(Fore.YELLOW + "|                                                        |")
 
@@ -206,19 +204,19 @@ PURPOSES ONLY.
             self.print_header()  
             print(Fore.YELLOW + " -------------------COMMAND-MENU------------------------")
             self.print_space()
-            print(Fore.YELLOW + "|-- help,sos             view the help menu    --     1  |")
-            print(Fore.YELLOW + "|-- clr                  Clear the screen      --     2  |")
-            print(Fore.YELLOW + "|-- shell                run a shell command   --     3  |")
-            print(Fore.YELLOW + "|-- exit,q               exits the script      --     4  |")
+            print(Fore.YELLOW + "| • help,sos             view the help menu    --     1  |")
+            print(Fore.YELLOW + "| • clr                  Clear the screen      --     2  |")
+            print(Fore.YELLOW + "| • shell                run a shell command   --     3  |")
+            print(Fore.YELLOW + "| • exit,q               exits the script      --     4  |")
             self.print_space()
             print(Fore.YELLOW + "|------------------------------------------------------- |")
             self.print_space()
-            print(Fore.YELLOW + "|-- l3                   Layer 3 (ICMP)        --     5  |")
-            print(Fore.YELLOW + "|-- l4                   Layer 4 (TCP / UDP)   --     6  |")
-            print(Fore.YELLOW + "|-- l7                   Layer 7 (HTTP)        --     7  |")
-            print(Fore.YELLOW + "|-- port                 perform a port scan   --     8  |")
-            print(Fore.YELLOW + "|-- arp                  arp spoofer           --     9  |")
-            print(Fore.YELLOW + "|-- jam                  wifi jammer/deauth    --    10  |")
+            print(Fore.YELLOW + "| • l3                   Layer 3 (ICMP)        --     5  |")
+            print(Fore.YELLOW + "| • l4                   Layer 4 (TCP / UDP)   --     6  |")
+            print(Fore.YELLOW + "| • l7                   Layer 7 (HTTP)        --     7  |")
+            print(Fore.YELLOW + "| • port                 perform a port scan   --     8  |")
+            print(Fore.YELLOW + "| • arp                  arp spoofer           --     9  |")
+            print(Fore.YELLOW + "| • jam                  wifi jammer/deauth    --    10  |")
             self.print_space()
             print(Fore.YELLOW + " -------------------------------------------------------")
     
@@ -249,7 +247,7 @@ PURPOSES ONLY.
     def help_menu(self):
         
         print(Fore.YELLOW + r"""  
-│ • help, sos:View this menu.
+│ • help,sos: View this menu.
 │ • clr: Clear the screen.
 │ • shell: Run a PowerShell command.
 │ • exit, q: Exits the script.
