@@ -25,7 +25,13 @@ wifi jammer: send deauthentication packets to a specified mac address, booting t
 arp spoofer: intercept or manipulate network traffic between devices on the same network. 
 By impersonating a device's IP address, you can redirect traffic or disrupt communications.
 
-port scanning: scan an ip address for open and closed ports
+port scanning: scan an ip address for open and closed ports.
+
+dns look-up: reverse dns look up an ip adress.
+
+geo ip address look-up.
+
+subnet lookup.
 
 # Installation
 you can either run the install.bat file or do the following:
