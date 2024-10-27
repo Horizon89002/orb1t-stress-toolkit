@@ -2,6 +2,8 @@
 
 import os; os.system('mode con: cols=120 lines=30')
 import socket
+import sys
+import requests
 from concurrent.futures import ThreadPoolExecutor
 import threading
 import struct
@@ -215,7 +217,7 @@ class orb1t:
             print(Fore.YELLOW + "| • l3                   Layer 3 (ICMP)        --     5  |")
             print(Fore.YELLOW + "| • l4                   Layer 4 (TCP / UDP)   --     6  |")
             print(Fore.YELLOW + "| • l7                   Layer 7 (HTTP)        --     7  |")
-            print(Fore.YELLOW + "| • port                 perform a port scan   --     8  |")
+            print(Fore.YELLOW + "| • tool                 show the tool menu    --     8  |")
             print(Fore.YELLOW + "| • arp                  arp spoofer           --     9  |")
             print(Fore.YELLOW + "| • jam                  wifi jammer/deauth    --    10  |")
             self.print_space()
@@ -240,13 +242,70 @@ class orb1t:
             elif choice == 'help':
                 self.help_menu()
             elif choice == 'sos':
-                self.help_menu()    
-            else:
-                print(Fore.RED + "Invalid command. Please try again.")
+                self.help_menu()
+            elif choice == 'sub':
+                self.subnet()
+            elif choice == 'geo':
+                self.geoip()                              
+            elif choice == "dns":
+                self.dnslookup()
+            elif choice == "tool":
+                self.toolmenu()
+            
 
-    
-    def help_menu(self):
+    def toolmenu(self):
+        print(Fore.LIGHTRED_EX + r"""  
+ _________  ________  ________  ___       ________      
+|\___   ___\\   __  \|\   __  \|\  \     |\   ____\     
+\|___ \  \_\ \  \|\  \ \  \|\  \ \  \    \ \  \___|_    
+     \ \  \ \ \  \\\  \ \  \\\  \ \  \    \ \_____  \   
+      \ \  \ \ \  \\\  \ \  \\\  \ \  \____\|____|\  \  
+       \ \__\ \ \_______\ \_______\ \_______\____\_\  \ 
+        \|__|  \|_______|\|_______|\|_______|\_________\ 
+""")                                                                                      
+        print(Fore.LIGHTYELLOW_EX + "  --------------------------------------------------------------- ")          
+        print(Fore.LIGHTYELLOW_EX + " │ • port             perform a port scan on an IP            -- │ ") 
+        print(Fore.LIGHTYELLOW_EX + " │ • geo              perform a geo IP address lookup         -- │ ") 
+        print(Fore.LIGHTYELLOW_EX + " │ • sub              perform a subnet scan                   -- │ ")
+        print(Fore.LIGHTYELLOW_EX + " │ • dns              perform a classic reverse DNS lookup    -- │ ")
+
+        input(Fore.YELLOW + "Press Enter to return to the command menu...")
+
+    def main_loop(self):
+        while True:
+            self.toolmenu()
+
+    def dnslookup(self):
+        target = input(Fore.YELLOW + "Enter target IP: " + Fore.YELLOW).strip()
         
+        try:
+            r = requests.get(f"https://api.hackertarget.com/reversedns/?q={target}")
+            print(r.text) 
+        except requests.RequestException:
+            print(Fore.RED + 'An error has occurred while sending the request to the API!')
+        input(Fore.YELLOW + "Press Enter to return to clear the screen..")
+
+    def subnet(self):
+        target = input(Fore.YELLOW + "Enter target IP: " + Fore.YELLOW).strip()
+        
+        try:
+            r = requests.get(f"https://api.hackertarget.com/subnetcalc/?q={target}")
+            print(r.text) 
+        except requests.RequestException:
+            print(Fore.RED + 'An error has occurred while sending the request to the API!')
+        input(Fore.YELLOW + "Press Enter to clear the screen..")
+    
+
+    def geoip(self):
+        target = input(Fore.YELLOW + "Enter target IP: " + Fore.YELLOW).strip()       
+        try:
+            r = requests.get(f"https://api.hackertarget.com/geoip/?q={target}")
+            print(r.text)  
+        except requests.RequestException:
+            print(Fore.RED + 'An error has occurred while sending the request to the API!')
+        input(Fore.YELLOW + "Press Enter to clear the screen..")
+
+    def help_menu(self): 
         print(Fore.YELLOW + r"""  
 │ • help,sos: View this menu.
 │ • clr: Clear the screen.
@@ -268,6 +327,8 @@ class orb1t:
             self.interactive_layer4()
         elif command == 'l7':
             self.interactive_layer7()
+
+
 
     def interactive_layer3(self):
         self.settings["target"] = input(Fore.YELLOW + "Enter target IP: ")
@@ -516,4 +577,5 @@ if __name__ == "__main__":
     orb1t_instance = orb1t()  
     orb1t_instance.port_scan()
     orb1t.help_menu()
+    orb1t.toolmenu()
     
