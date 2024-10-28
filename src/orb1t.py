@@ -190,12 +190,12 @@ class orb1t:
         print("FOR ANY DAMAGE/LEGAL ISSUES CAUSED BY ORB1T.")
         print("THIS SCRIPT WAS MADE FOR EDUCATIONAL AND TESTING PURPOSES ONLY.\n")
         print(Fore.BLUE + " ________  ________  ________    _____  _________   ")
-        print(Fore.LIGHTBLUE_EX +"|\\   __  \\|\\   __  \\|\\   __  \\  / __  \\|\\___   ___\\ ")
+        print(Fore.BLUE +"|\\   __  \\|\\   __  \\|\\   __  \\  / __  \\|\\___   ___\\ ")
         print(Fore.LIGHTBLUE_EX + "\\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\ /_|\\/|\\  \\|___ \\  \\_| ")
         print(Fore.LIGHTBLUE_EX + " \\ \\  \\\\\\  \\ \\   _  _\\ \\   __  \\|/ \\ \\  \\   \\ \\  \\  ")
-        print(Fore.LIGHTYELLOW_EX + "  \\ \\  \\\\\\  \\ \\  \\\\  \\\\ \\  \\|\\  \\   \\ \\  \\   \\ \\  \\ ")
-        print(Fore.LIGHTYELLOW_EX + "   \\ \\_______\\ \\__\\\\ _\\\\ \\_______\\   \\ \\__\\   \\ \\__\\")
-        print(Fore.LIGHTYELLOW_EX + "    \\|_______|\\|__|\\|__|\\|_______|    \\|__|    \\|__| v1.2")
+        print(Fore.MAGENTA + "  \\ \\  \\\\\\  \\ \\  \\\\  \\\\ \\  \\|\\  \\   \\ \\  \\   \\ \\  \\ ")
+        print(Fore.LIGHTMAGENTA_EX + "   \\ \\_______\\ \\__\\\\ _\\\\ \\_______\\   \\ \\__\\   \\ \\__\\")
+        print(Fore.LIGHTMAGENTA_EX + "    \\|_______|\\|__|\\|__|\\|_______|    \\|__|    \\|__|")
      
         print(Style.RESET_ALL)
 
@@ -247,11 +247,12 @@ class orb1t:
                 self.subnet()
             elif choice == 'geo':
                 self.geoip()                              
-            elif choice == "dns":
-                self.dnslookup()
+            elif choice == "rdns":
+                self.revdns()
             elif choice == "tool":
                 self.toolmenu()
-            
+            elif choice == "dns":
+                self.dnslookup()
 
     def toolmenu(self):
         print(Fore.LIGHTRED_EX + r"""  
@@ -263,11 +264,15 @@ class orb1t:
        \ \__\ \ \_______\ \_______\ \_______\____\_\  \ 
         \|__|  \|_______|\|_______|\|_______|\_________\ 
 """)                                                                                      
-        print(Fore.LIGHTYELLOW_EX + "  --------------------------------------------------------------- ")          
+        print(Fore.LIGHTYELLOW_EX + "  --------------------------------------------------------------- ")  
+        self.tspace()
         print(Fore.LIGHTYELLOW_EX + " │ • port             perform a port scan on an IP            -- │ ") 
         print(Fore.LIGHTYELLOW_EX + " │ • geo              perform a geo IP address lookup         -- │ ") 
         print(Fore.LIGHTYELLOW_EX + " │ • sub              perform a subnet scan                   -- │ ")
-        print(Fore.LIGHTYELLOW_EX + " │ • dns              perform a classic reverse DNS lookup    -- │ ")
+        print(Fore.LIGHTYELLOW_EX + " │ • rdns             perform a reverse DNS lookup            -- │ ")
+        print(Fore.LIGHTYELLOW_EX + " │ • dns              perform a classic DNS lookup            -- │ ")
+        self.tspace()
+        print(Fore.LIGHTYELLOW_EX + "  --------------------------------------------------------------- ")  
 
         input(Fore.YELLOW + "Press Enter to return to the command menu...")
 
@@ -275,8 +280,11 @@ class orb1t:
         while True:
             self.toolmenu()
 
-    def dnslookup(self):
-        target = input(Fore.YELLOW + "Enter target IP: " + Fore.YELLOW).strip()
+    def tspace(self):
+        print(Fore.LIGHTYELLOW_EX + " │                                                               │ ")
+
+    def revdns(self):
+        target = input(Fore.YELLOW + "Enter target IP or domain: " + Fore.YELLOW).strip()
         
         try:
             r = requests.get(f"https://api.hackertarget.com/reversedns/?q={target}")
@@ -295,6 +303,29 @@ class orb1t:
             print(Fore.RED + 'An error has occurred while sending the request to the API!')
         input(Fore.YELLOW + "Press Enter to clear the screen..")
     
+
+    def dnslookup(self):
+        target = input(Fore.YELLOW + "Enter target domain: " + Fore.YELLOW).strip()
+        
+        try:
+            r = requests.get(f"https://api.hackertarget.com/dnslookup/?q={target}")
+            print(r.text)          
+        except requests.RequestException:
+            print(Fore.RED + 'An error has occurred while sending the request to the API!')
+        input(Fore.YELLOW + "Press Enter to clear the screen..")
+    
+
+    def revIP(self):
+        target = input(Fore.YELLOW + "Enter target domain: " + Fore.YELLOW).strip()
+        
+        try:
+            r = requests.get(f"https://api.hackertarget.com/reverseiplookup/?q={target}")
+            print(r.text)          
+        except requests.RequestException:
+            print(Fore.RED + 'An error has occurred while sending the request to the API!')
+        input(Fore.YELLOW + "Press Enter to clear the screen..")
+
+
 
     def geoip(self):
         target = input(Fore.YELLOW + "Enter target IP: " + Fore.YELLOW).strip()       
@@ -317,8 +348,12 @@ class orb1t:
 │ • port: Scan an IP address for open and closed ports.
 │ • arp: Spoof/poison ARP responses to disrupt communication between devices on the network.
 │ • jam: Wi-Fi jammer sends deauthentication packets, forcing the device to reconnect.
+│ • geo: run a geographical scan on an IP address for information such as lat,longt and etc.
+│ • sub: run a subent scan on an IP address.
+│ • rdns: perform a reverse dns scan.
+│ • dns: perform a classic dns scan.
 """)
-        input(Fore.YELLOW + "Press Enter to return to the menu...")
+        input(Fore.YELLOW + "Press Enter to return to the command menu...")
         
     def load_module(self, command):
         if command == 'l3':
