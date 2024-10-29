@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os; os.system('mode con: cols=120 lines=30')
+import os; os.system('mode con: cols=120 lines=36')
 import socket
 import sys
 import requests
@@ -186,18 +186,24 @@ class orb1t:
 
 
     def print_header(self):
-        print(Fore.WHITE + "BY USING THIS SCRIPT, YOU AGREE TO TAKE FULL RESPONSIBILITY ")
-        print("FOR ANY DAMAGE/LEGAL ISSUES CAUSED BY ORB1T.")
-        print("THIS SCRIPT WAS MADE FOR EDUCATIONAL AND TESTING PURPOSES ONLY.\n")
-        print(Fore.BLUE + " ________  ________  ________    _____  _________   ")
-        print(Fore.BLUE +"|\\   __  \\|\\   __  \\|\\   __  \\  / __  \\|\\___   ___\\ ")
-        print(Fore.LIGHTBLUE_EX + "\\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\ /_|\\/|\\  \\|___ \\  \\_| ")
-        print(Fore.LIGHTBLUE_EX + " \\ \\  \\\\\\  \\ \\   _  _\\ \\   __  \\|/ \\ \\  \\   \\ \\  \\  ")
-        print(Fore.MAGENTA + "  \\ \\  \\\\\\  \\ \\  \\\\  \\\\ \\  \\|\\  \\   \\ \\  \\   \\ \\  \\ ")
-        print(Fore.LIGHTMAGENTA_EX + "   \\ \\_______\\ \\__\\\\ _\\\\ \\_______\\   \\ \\__\\   \\ \\__\\")
-        print(Fore.LIGHTMAGENTA_EX + "    \\|_______|\\|__|\\|__|\\|_______|    \\|__|    \\|__|")
-     
-        print(Style.RESET_ALL)
+     print(Fore.WHITE + r"""                
+ .                    .              .       .     ,
+      .         ,
+   .               .          .       .           .                 
+     .    * 
+""")          
+     print(Fore.LIGHTYELLOW_EX + r"""
+                  .      ___.      ____    __        .
+ .       ____   _______  \_ |__   /_   | _/  |_  .         
+        /  _ \  \_  __ \  | __ \   |   | \   __\
+    ,  (  <_> )  |  | \/  | \_\ \  |   |  |  |       .
+        \____/   |__|     |_____/  |___|  |__| V1.4        
+""")
+     print(Fore.WHITE + r"""
+ .          .           ,         ,       .          .   
+          .    .      .                  .     *       .          
+      .          .        *       .      .         .          
+""")
 
     def print_space(self):
         print(Fore.YELLOW + "|                                                        |")
